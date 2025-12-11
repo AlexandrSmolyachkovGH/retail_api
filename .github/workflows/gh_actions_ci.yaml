@@ -1,0 +1,22 @@
+name: GitHub actions for the RetailAPI service
+run-name: pr-retail-tests
+on: [ pull_request ]
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Build and run Docker Compose
+        env:
+          SUBDOMAIN: ${{ secrets.SUBDOMAIN }}
+          API_KEY: ${{ secrets.API_KEY }}
+        run: docker compose -f docker-compose.yaml up -d --build
+
+      - name: Run tests inside API container
+        run: docker exec retail_api_app poetry run coverage run -m pytest
+
+      - name: Report Coverage
+        run: docker exec retail_api_app poetry run coverage report --fail-under=80
