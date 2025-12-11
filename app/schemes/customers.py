@@ -3,6 +3,7 @@ from enum import Enum
 
 from pydantic import (
     BaseModel,
+    ConfigDict,
     EmailStr,
     Field,
 )
@@ -119,12 +120,13 @@ class GetCustomerRequest(Pagination):
         default=None,
     )
 
-    class Config:
-        json_encoders = {
+    model_config = ConfigDict(
+        json_encoders={
             date: (
                 lambda v: v.strftime('%Y-%m-%d') if isinstance(v, date) else v
             )
         }
+    )
 
 
 class Subscription(BaseModel):

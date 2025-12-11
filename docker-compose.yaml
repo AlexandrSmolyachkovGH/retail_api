@@ -1,0 +1,9 @@
+services:
+  api:
+    build: .
+    container_name: retail_api_app
+    ports:
+      - "8088:8088"
+    env_file:
+      - .env
+    restart: unless-stopped

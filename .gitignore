@@ -12,3 +12,4 @@ certs/
 *.bak
 *.dat
 *.log
+.coverage
